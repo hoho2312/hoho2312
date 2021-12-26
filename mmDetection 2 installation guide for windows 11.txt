@@ -1,0 +1,39 @@
+official github websites: https://github.com/open-mmlab/mmdetection
+config: windows 11 + Anaconda + python 3.7 + CUDA 11.3 + PyTorch 1.10.1 + mmcv-full 1.4.0 + mmDetection 2.19.1
+(mmcv-full 1.4.1 + mmDetection 2.19.1 --> .DLL not found error)
+tutorial referring to https://zhuanlan.zhihu.com/p/396934340
+Prerequisite: git and C++ build tools 14.0 (or above) have been installed in windows and added to PATH environment variable
+
+1. Install Anaconda
+
+2. Install Nvidia driver and CUDA to local machine (add CUDA/bin to PATH environment variable)
+To verify Nvidia driver: in Anaconda Powershell Prompt, type 'Nvidia-smi' and see any output
+To verify CUDA: in Anaconda Powershell Pro,pt, type 'nvcc -V' and see any output
+
+3. Create conda virtual environment: conda create -n openmmlab python=3.7
+To activate virtual environment: type 'conda activate openmmlab'
+
+4. Install Pytorch by 'conda install pytorch torchvision torchaudio cudatoolkit=11.3 -c pytorch'
+
+5. Install opencv by 'pip install opencv-python' and 'pip install opencv-contrib-python'
+
+6. Check https://download.openmmlab.com/mmcv/dist/cuXXX/torchY.Y.Y/index.html
+e.g. if you are having cuda 11.3 and pytorch 1.10.0 / 1.10.1 etc --> XXX=113, Y.Y.Y = 1.10.0
+make sure the version of mmcv matches with python, cuda, and pytorch version, with 'win_amd64' wheel
+Install mmcv-full by 'pip install mmcv-full==1.4.0 -f https://download.openmmlab.com/mmcv/dist/cu111/torch1.8.0/index.html'
+(mmcv==x.x.x based on what version you choose. If you want 1.4.1, then just type mmcv==1.4.1 etc)
+
+7. Check https://github.com/open-mmlab/mmdetection/blob/master/docs/en/get_started.md and see which appropriate version of mmDetection can be installed to match with your previously installed mmcv version
+Type the following commands one by one (make sure you have git, or you can directly download the code from github):
+git clone https://github.com/open-mmlab/mmdetection.git   
+cd mmdetection
+pip install -r requirements/build.txt
+pip install -v -e .
+
+8. Inside mmDetection folder, create a new folder and name it as 'checkpoints'
+Download a faster-rcnn model from https://download.openmmlab.com/mmdetection/v2.0/faster_rcnn/faster_rcnn_r50_fpn_1x_coco/faster_rcnn_r50_fpn_1x_coco_20200130-047c8118.pth
+Save the model inside 'checkpoints' folder
+
+9. To verify installation od mmDetection, open Anaconda powershell prompt, activate the corresponding environment, change directory to mmDetection folder, and type
+'python demo/image_demo.py demo/demo.jpg configs/faster_rcnn/faster_rcnn_r50_fpn_1x_coco.py checkpoints/faster_rcnn_r50_fpn_1x_coco_20200130-047c8118.pth'
+if a detection result (should be an image with many bounding boxes) appears, then the installation should be OK.
